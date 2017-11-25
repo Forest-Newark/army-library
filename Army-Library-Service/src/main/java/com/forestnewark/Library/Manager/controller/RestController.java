@@ -3,6 +3,8 @@ package com.forestnewark.Library.Manager.controller;
 import com.forestnewark.Library.Manager.Repository.CompositionRepository;
 import com.forestnewark.Library.Manager.bean.Composition;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -17,27 +19,26 @@ public class RestController {
     @Autowired
     CompositionRepository compositionRepository;
 
-    @RequestMapping("/test")
-    public String test(){
-        return "test working";
+
+    /**
+     * Check service is up and running
+     * Loading for Heroku Free Servers
+     * @return status code
+     */
+    @RequestMapping("/servicetest")
+    public ResponseEntity serviceTest(){
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 
-    @RequestMapping("/testGetComp")
-    public Composition testComp(){
-
-        Composition comp = new Composition(null,"CS",123,"Magoo","Newark","Laches","Big Band",1923,"awesome");
-        return comp;
-    }
-
-    @RequestMapping("/testRepo")
-    public List<Composition> testRepo(){
-        Composition comp = new Composition(null,"CS",123,"Magoo","Newark","Laches","Big Band",1923,"awesome");
-        compositionRepository.save(comp);
+    /**
+     * Get all compositions
+     * @return all compositions (unsorted)
+     */
+    @RequestMapping("/compositions")
+    public List<Composition> getAllCompositions(){
         return compositionRepository.findAll();
-
     }
-
 
 
 }
