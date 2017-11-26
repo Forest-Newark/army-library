@@ -64,7 +64,7 @@ public class RestController {
      * @return added composition
      */
     @RequestMapping(value="/composition/add", method= RequestMethod.POST)
-    public Composition addNewComposition(Composition composition){
+    public Composition addNewComposition(@RequestBody Composition composition){
         compositionRepository.save(composition);
         return composition;
 
