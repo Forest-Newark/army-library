@@ -1,0 +1,5 @@
+<input #gb type="text" placeholder="Global search">
+<p-dataTable [value]="compositions" [globalFilter]="gb">
+  <p-column field="name" header="Name" sortable="true"></p-column>
+  <p-column field="catagory" header="Catoagory"></p-column> 
+</p-dataTable>
