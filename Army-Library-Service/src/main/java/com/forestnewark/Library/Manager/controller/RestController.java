@@ -7,6 +7,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -22,6 +24,8 @@ import java.util.List;
  * Created by Forest on 11/25/17.
  */
 @org.springframework.web.bind.annotation.RestController
+@RequestMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE, value = "/api")
+@CrossOrigin(origins = "*")
 public class RestController {
 
 
@@ -47,9 +51,9 @@ public class RestController {
      * Get all compositions
      * @return all compositions (unsorted)
      */
-    @CrossOrigin
-    @RequestMapping("/composition")
-    public List<Composition> getAllCompositions(){
+
+    @RequestMapping(value= "/composition", produces = "application/json")
+    public @ResponseBody List<Composition> getAllCompositions(){
         return compositionRepository.findAll();
     }
 
@@ -61,6 +65,7 @@ public class RestController {
      * @param composition
      * @return added composition
      */
+
     @RequestMapping(value="/composition/add", method= RequestMethod.POST)
     public Composition addNewComposition(@RequestBody Composition composition){
         compositionRepository.save(composition);

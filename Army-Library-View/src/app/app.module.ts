@@ -6,6 +6,7 @@ import {HttpClientModule} from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { DatatableComponent } from './datatable/datatable.component';
 import { DataTableModule } from 'primeng/primeng';
+import {ButtonModule} from 'primeng/primeng';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { DataTableModule } from 'primeng/primeng';
   imports: [
     BrowserModule,
     DataTableModule,
-    HttpClientModule
+    HttpClientModule,
+    ButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

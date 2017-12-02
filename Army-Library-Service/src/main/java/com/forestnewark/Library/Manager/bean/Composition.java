@@ -7,7 +7,7 @@ import javax.persistence.Id;
 /**
  * Created by Forest on 11/25/17.
  */
-@Entity
+@Entity(name = "Composition")
 public class Composition {
 
 
