@@ -1,0 +1,5 @@
+<input type="file" (change)="fileChange($event)" placeholder="Upload file">
+
+
+
+<p-fileUpload name="myfile[]" customUpload="true" (uploadHandler)="myUploader($event)"></p-fileUpload>

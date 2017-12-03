@@ -18,7 +18,7 @@ public class Composition {
 
     private String catagory;
 
-    private Integer libraryNumber;
+    private String libraryNumber;
 
     private String title;
 
@@ -31,13 +31,13 @@ public class Composition {
 
     private String ensemble;
 
-    private Integer copyright;
+    private String copyright;
     private String notes;
 
     public Composition() {
     }
 
-    public Composition(Integer id, String catagory, Integer libraryNumber, String title, String composer, String arranger, String ensemble, Integer copyright, String notes) {
+    public Composition(Integer id, String catagory, String libraryNumber, String title, String composer, String arranger, String ensemble, String copyright, String notes) {
         this.id = id;
         this.catagory = catagory;
         this.libraryNumber = libraryNumber;
@@ -65,11 +65,11 @@ public class Composition {
         this.catagory = catagory;
     }
 
-    public Integer getLibraryNumber() {
+    public String getLibraryNumber() {
         return libraryNumber;
     }
 
-    public void setLibraryNumber(Integer libraryNumber) {
+    public void setLibraryNumber(String libraryNumber) {
         this.libraryNumber = libraryNumber;
     }
 
@@ -105,11 +105,11 @@ public class Composition {
         this.ensemble = ensemble;
     }
 
-    public Integer getCopyright() {
+    public String getCopyright() {
         return copyright;
     }
 
-    public void setCopyright(Integer copyright) {
+    public void setCopyright(String copyright) {
         this.copyright = copyright;
     }
 

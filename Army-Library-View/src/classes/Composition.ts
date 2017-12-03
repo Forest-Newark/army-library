@@ -1,11 +1,11 @@
 export class Composition{
     id:number;
     catagory:string;
-    libraryNumber:number;
+    libraryNumber:string;
     title:string;
     composer:string;
     arranger:string;
     ensemble:string;
-    copyright:number;
+    copyright:string;
     notes:string;
 }

@@ -103,8 +103,9 @@ public class RestController {
      * @throws IOException
      */
     @RequestMapping(value = "/submitCSV", method = RequestMethod.POST)
-    public void uploadFileHandler(@RequestParam("file") MultipartFile file) throws IOException {
+    public void uploadFileHandler(@RequestParam("File") MultipartFile file) throws IOException {
 
+        System.out.println("file uploaded");
 
         Reader in = new FileReader(fileService.convert(file));
 
@@ -113,12 +114,12 @@ public class RestController {
             Composition composition = new Composition(
                     null,
                     record.get("Catagory"),
-                    Integer.parseInt(record.get("libnum")),
+                    record.get("libnum"),
                     record.get("Title"),
                     record.get("Composer"),
                     record.get("Arranger"),
                     record.get("Ensemble"),
-                    Integer.parseInt(record.get("Copyright")),
+                    record.get("Copyright"),
                     record.get("Notes")
             );
             compositionRepository.save(composition);
