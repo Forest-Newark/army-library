@@ -1,9 +1,53 @@
-<input #gb type="text" placeholder="Global search">
-<p-dataTable [value]="compositions" [globalFilter]="gb">
-    <p-header><div class="ui-helper-clearfix" style="width:100%"><button type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Add"></button></div></p-header>
+<div class="ui-widget-header" style="padding:4px 10px;border-bottom: 0 none">
+    <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+    <input #gb type="text" pInputText size="50" placeholder="Global Filter">
+</div>
+<p-dataTable [value]="compositions" [globalFilter]="gb" [rows]="25" [paginator]="true">
+  <p-header><div class="ui-helper-clearfix" style="width:100%"><button type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Add"></button></div></p-header>
   <p-column field="catagory" header="Catoagory"></p-column> 
   <p-column field="libraryNumber" header="Library Number" sortable="true"></p-column>
   <p-column field="title" header="title" sortable="true"></p-column>
   <p-column field="composer" header="Composer"></p-column> 
-  
+  <ng-template pTemplate="paginatorLeft">
+      <button type="button" pButton icon="fa-refresh"></button>
+  </ng-template>
+  <ng-template pTemplate="paginatorRight">
+      <button type="button" pButton icon="fa-cloud-upload"></button>
+  </ng-template>
 </p-dataTable>
+
+
+
+
+
+
+<!-- <div class="ui-widget-header" style="padding:4px 10px;border-bottom: 0 none">
+    <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+    <input #gb type="text" pInputText size="50" placeholder="Global Filter">
+</div>
+
+<p-dataTable [value]="compositions" [rows]="10" [paginator]="true" [globalFilter]="gb" #dt>
+    <p-header>Compositions</p-header>
+    
+    <p-column field="catagory" header="Vin (startsWith)" [filter]="true" filterPlaceholder="Search"></p-column>
+    
+    <p-column field="year" header="Year ({{yearFilter||'No Filter'}})" [filter]="true" filterMatchMode="equals">
+        <ng-template pTemplate="filter" let-col>
+            <i class="fa fa-close" (click)="yearFilter=null;dt.filter(null,col.field,col.filterMatchMode)"></i>
+            <p-slider [style]="{'width':'100%','margin-top':'8px'}" [(ngModel)]="yearFilter" [min]="1970" [max]="2010" (onChange)="onYearChange($event, dt, col)"></p-slider>
+        </ng-template>
+    </p-column>
+    
+    <p-column field="brand" header="Brand (Custom)" [filter]="true" filterMatchMode="equals">
+        <ng-template pTemplate="filter" let-col>
+            <p-dropdown [options]="brands" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-dropdown>
+        </ng-template>
+    </p-column>
+    
+    <p-column field="color" header="Color (Custom)" [filter]="true" filterMatchMode="in">
+        <ng-template pTemplate="filter" let-col>
+            <p-multiSelect [options]="colors" defaultLabel="All Colors" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-multiSelect>
+        </ng-template>
+    </p-column>
+
+  </p-dataTable> -->

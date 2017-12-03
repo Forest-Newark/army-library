@@ -18,8 +18,6 @@ export class FileuploadComponent implements OnInit {
   }
 
 
-
-	 
   // fileChange(event) {
   //     let fileList: FileList = event.target.files;
   //     if(fileList.length > 0) {
@@ -39,8 +37,6 @@ export class FileuploadComponent implements OnInit {
   //     }
   // }
   
-
-
 
   myUploader(event) {
     let fileList: FileList = event.files;

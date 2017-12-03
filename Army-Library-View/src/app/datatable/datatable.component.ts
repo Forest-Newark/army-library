@@ -15,7 +15,7 @@ import {HttpClient} from '@angular/common/http';
 export class DatatableComponent implements OnInit {
 
   compositions:Composition[];
-
+  catagories = [];
   displayDialog: boolean;
 
   onRowSelect(event) {
@@ -54,6 +54,11 @@ showDialogToAdd() {
           // }
         });
 
+
+
+        
+        this.catagories.push({label: 'All Brands', value: null});
+        this.catagories.push({label: 'CS', value: 'CS'});  
   }
 
 }
