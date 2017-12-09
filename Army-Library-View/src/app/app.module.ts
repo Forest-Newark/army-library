@@ -12,13 +12,17 @@ import {FileUploadModule} from 'primeng/primeng';
 import {DialogModule} from 'primeng/primeng';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
+import { NavbarComponent } from './navbar/navbar.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { AppRoutingModule } from './/app-routing.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     DatatableComponent,
-    FileuploadComponent
+    FileuploadComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +32,9 @@ import { FormsModule } from '@angular/forms';
     FileUploadModule,
     DialogModule,
     BrowserAnimationsModule,
-    FormsModule
+    FormsModule,
+    NgbModule.forRoot(),
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
