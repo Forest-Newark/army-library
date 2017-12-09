@@ -14,7 +14,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from './navbar/navbar.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { AppRoutingModule } from './/app-routing.module';
+import {AppRoutingModule} from '../app/app-routing.module';
+
+
 
 
 @NgModule({
