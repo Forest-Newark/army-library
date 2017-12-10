@@ -24,7 +24,7 @@ export class FileuploadComponent implements OnInit {
       let formData: FormData = new FormData();
       formData.append('File', file, file.name);
       let headers = new Headers();
-      this.http.post('http://localhost:8080/api/submitCSV', formData)
+      this.http.post('https://army-library.herokuapp.com/api/submitCSV', formData)
         .subscribe(
         data => console.log('success'),
         error => console.log(error)

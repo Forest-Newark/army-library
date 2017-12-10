@@ -37,7 +37,7 @@ export class DatatableComponent implements OnInit {
 
   save(c: PrimeComposition) {
 
-    this.http.post('http://localhost:8080/api//composition/update', this.comp)
+    this.http.post('https://army-library.herokuapp.com/api/composition/update', this.comp)
       .subscribe(
       data => { console.log('success'), this.displayDialog = false;this.subscribeToData(); },
       error => console.log(error)
@@ -75,7 +75,7 @@ export class DatatableComponent implements OnInit {
   }
 
   subscribeToData() {
-    this.http.get<Composition[]>('http://localhost:8080/api/composition').subscribe(data => {
+    this.http.get<Composition[]>('https://army-library.herokuapp.com//api/composition').subscribe(data => {
       // data is now an instance of type ItemsResponse, so you can do this:
       //this.compositions = data.json()
       console.log(data);
