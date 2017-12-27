@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { DataTableModule, SharedModule } from 'primeng/primeng';
-import { ButtonModule } from 'primeng/primeng';
+import { ButtonModule,InputTextareaModule } from 'primeng/primeng';
 import { Composition } from '../../classes/composition';
 import { HttpClient } from '@angular/common/http';
 import { DialogModule } from 'primeng/primeng';
+import {AuthenticationService} from '../authentication.service';
 
 
 // https://www.primefaces.org/primeng/#/datatable/crud
@@ -44,41 +45,22 @@ export class DatatableComponent implements OnInit {
       )
   }
 
-
-
-
-
-
-  showDialogToAdd() {
-
+  isUserAuthenticated():boolean { 
+    return this.userService.isUserAuthenticated();
   }
+  
 
-  constructor(private http: HttpClient) { }
+
+  constructor(private http: HttpClient, private userService: AuthenticationService) { }
 
   ngOnInit() {
     this.subscribeToData();
-
-
-    // this.http.get<Composition>('http://army-library.herokuapp.com/composition').subscribe(data => {
-    //   // data is now an instance of type ItemsResponse, so you can do this:
-    //   //this.compositions = data.json()
-    //   console.log(data.title);
-    // });
-
-
-
-
-
-
     this.catagories.push({ label: 'All Brands', value: null });
     this.catagories.push({ label: 'CS', value: 'CS' });
   }
 
   subscribeToData() {
-    this.http.get<Composition[]>('https://army-library.herokuapp.com//api/composition').subscribe(data => {
-      // data is now an instance of type ItemsResponse, so you can do this:
-      //this.compositions = data.json()
-      console.log(data);
+    this.http.get<Composition[]>('https://army-library.herokuapp.com/api/composition').subscribe(data => {
       this.compositions = data;
 
     });
@@ -91,4 +73,5 @@ class PrimeComposition {
 
   constructor(public id?, public composition?, public catagory?, public libraryNumber?, public title?, public composer?, public arranger?, public ensemble?, public copyright?, public notes?) { }
 }
+
 

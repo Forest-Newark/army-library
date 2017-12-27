@@ -14,8 +14,23 @@
       </ul>
       <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-              <a class="nav-link" href="" data-target="#myModal" data-toggle="modal">About</a>
+              <a *ngIf="!isUserAuthenticated()"class="nav-link" (click)="popLoginDialog()">Login</a>
+              <a *ngIf="isUserAuthenticated()"class="nav-link" (click)="logout()">Logout</a>
           </li>
       </ul>
   </div>
 </nav>
+
+
+<p-dialog [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+     <div class="modal-dialog">
+				<div class="loginmodal-container">
+					<h1>Login to Your Account</h1><br>
+				  <form>
+					<input type="text" [(ngModel)]='loginUserName' name="user" placeholder="Username">
+					<input type="password" [(ngModel)]='loginPassword' name="pass" placeholder="Password">
+					<input type="submit" name="login" class="login loginmodal-submit" (click)="login()" value="Login">
+				  </form>
+				</div>
+			</div>
+</p-dialog>

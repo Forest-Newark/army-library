@@ -9,12 +9,13 @@ import { DataTableModule } from 'primeng/primeng';
 import {ButtonModule} from 'primeng/primeng';
 import { FileuploadComponent } from './fileupload/fileupload.component';
 import {FileUploadModule} from 'primeng/primeng';
-import {DialogModule} from 'primeng/primeng';
+import {DialogModule,InputTextareaModule} from 'primeng/primeng';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from './navbar/navbar.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AppRoutingModule} from '../app/app-routing.module';
+import {AuthenticationService} from '../app/authentication.service';
 
 
 
@@ -32,13 +33,14 @@ import {AppRoutingModule} from '../app/app-routing.module';
     HttpClientModule,
     ButtonModule,
     FileUploadModule,
+    InputTextareaModule,
     DialogModule,
     BrowserAnimationsModule,
     FormsModule,
     NgbModule.forRoot(),
     AppRoutingModule
   ],
-  providers: [],
+  providers: [AuthenticationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
