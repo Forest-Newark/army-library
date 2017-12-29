@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class AuthenticationService {
 
-  adminLogin: string = 'LibraryAdmin'
-  adminPassword: string = '246Band'
+  adminLogin: string = 'a'
+  adminPassword: string = 'a'
   userAuthenticated: boolean = false;
 
   constructor() { }

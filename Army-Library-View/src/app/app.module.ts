@@ -8,10 +8,11 @@ import { DatatableComponent } from './datatable/datatable.component';
 import { DataTableModule } from 'primeng/primeng';
 import {ButtonModule} from 'primeng/primeng';
 import { FileuploadComponent } from './fileupload/fileupload.component';
-import {FileUploadModule} from 'primeng/primeng';
+import {FileUploadModule,InputTextModule,PasswordModule} from 'primeng/primeng';
 import {DialogModule,InputTextareaModule} from 'primeng/primeng';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
+import {MenubarModule,MenuItem} from 'primeng/primeng';
 import { NavbarComponent } from './navbar/navbar.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AppRoutingModule} from '../app/app-routing.module';
@@ -25,7 +26,7 @@ import {AuthenticationService} from '../app/authentication.service';
     AppComponent,
     DatatableComponent,
     FileuploadComponent,
-    NavbarComponent
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,7 +39,10 @@ import {AuthenticationService} from '../app/authentication.service';
     BrowserAnimationsModule,
     FormsModule,
     NgbModule.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
+    InputTextModule,
+    PasswordModule,
+    MenubarModule,
   ],
   providers: [AuthenticationService],
   bootstrap: [AppComponent]
