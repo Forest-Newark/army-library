@@ -2,17 +2,29 @@
   <a class="navbar-brand abs" href="#">Army Library</a>
 
 </nav>
-<p-menubar  *ngIf="!isUserAuthenticated()" [model]="items">
+
+
+<p-menubar [model]="items">
+  <button  *ngIf="isUserAuthenticated()" pButton label="Logout" (click)="logout()"icon="fa-sign-out"></button>
+  <button  *ngIf="!isUserAuthenticated()" pButton label="Login" (click)="popLoginDialog()" icon="fa-sign-in"></button>
+</p-menubar>
+
+<!-- <div *ngIf="!isUserAuthenticated()"> 
+<p-menubar   [model]="items">
     <p>not auth</p>
     <button  *ngIf="isUserAuthenticated()" pButton label="Logout" (click)="logout()"icon="fa-sign-out"></button>
     <button  *ngIf="!isUserAuthenticated()" pButton label="Login" (click)="popLoginDialog()" icon="fa-sign-in"></button>
 </p-menubar>
-
-<p-menubar *ngIf="isUserAuthenticated()" [model]="authitems">
+</div>
+<div *ngIf="isUserAuthenticated()">
+  
+<p-menubar   [model]="authitems">
         <p>auth</p>
         <button  *ngIf="isUserAuthenticated()" pButton label="Logout" (click)="logout()"icon="fa-sign-out"></button>
         <button  *ngIf="!isUserAuthenticated()" pButton label="Login" (click)="popLoginDialog()" icon="fa-sign-in"></button>
 </p-menubar>
+
+</div> -->
 
 <p-dialog [(visible)]="displayDialog" header="Admin Login" [responsive]="true" showEffect="fade" [modal]="true">
     <label for="inputEmail" class="sr-only">Username</label>

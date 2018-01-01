@@ -27,6 +27,7 @@ import {AuthenticationService} from '../app/authentication.service';
     DatatableComponent,
     FileuploadComponent,
     NavbarComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -43,6 +44,7 @@ import {AuthenticationService} from '../app/authentication.service';
     InputTextModule,
     PasswordModule,
     MenubarModule,
+    
   ],
   providers: [AuthenticationService],
   bootstrap: [AppComponent]

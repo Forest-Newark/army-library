@@ -9,10 +9,11 @@ export class AuthenticationService {
 
   constructor() { }
 
-  checkUserCredentials(userName: string, password: string){
+  checkUserCredentials(userName: string, password: string): boolean{
     if(userName === this.adminLogin && password === this.adminPassword){
       this.userAuthenticated = true;
     }
+    return this.userAuthenticated;
   }
 
   isUserAuthenticated(): boolean {
