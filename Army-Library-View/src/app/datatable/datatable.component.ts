@@ -60,7 +60,7 @@ export class DatatableComponent implements OnInit {
   }
 
   subscribeToData() {
-    this.http.get<Composition[]>('https://army-library.herokuapp.com/api/composition').subscribe(data => {
+    this.http.get<Composition[]>('https://army-library.herokuapp.com/api/compositions').subscribe(data => {
       this.compositions = data;
 
     });
@@ -71,7 +71,7 @@ export class DatatableComponent implements OnInit {
 
 class PrimeComposition {
 
-  constructor(public id?, public composition?, public catagory?, public libraryNumber?, public title?, public composer?, public arranger?, public ensemble?, public copyright?, public notes?) { }
+  constructor(public id?, public composition?, public catagory?, public libraryNumber?, public title?, public composer?, public arranger?, public ensemble?, public copyright?, public notes?,public url?,public lastEdit?,public editedBy?) { }
 }
 
 

@@ -17,6 +17,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AppRoutingModule} from '../app/app-routing.module';
 import {AuthenticationService} from '../app/authentication.service';
+import { CompositionDetailComponent } from './composition-detail/composition-detail.component';
 
 
 
@@ -27,6 +28,7 @@ import {AuthenticationService} from '../app/authentication.service';
     DatatableComponent,
     FileuploadComponent,
     NavbarComponent,
+    CompositionDetailComponent,
     
   ],
   imports: [

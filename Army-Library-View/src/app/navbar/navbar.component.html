@@ -9,22 +9,10 @@
   <button  *ngIf="!isUserAuthenticated()" pButton label="Login" (click)="popLoginDialog()" icon="fa-sign-in"></button>
 </p-menubar>
 
-<!-- <div *ngIf="!isUserAuthenticated()"> 
-<p-menubar   [model]="items">
-    <p>not auth</p>
-    <button  *ngIf="isUserAuthenticated()" pButton label="Logout" (click)="logout()"icon="fa-sign-out"></button>
-    <button  *ngIf="!isUserAuthenticated()" pButton label="Login" (click)="popLoginDialog()" icon="fa-sign-in"></button>
-</p-menubar>
-</div>
-<div *ngIf="isUserAuthenticated()">
-  
-<p-menubar   [model]="authitems">
-        <p>auth</p>
-        <button  *ngIf="isUserAuthenticated()" pButton label="Logout" (click)="logout()"icon="fa-sign-out"></button>
-        <button  *ngIf="!isUserAuthenticated()" pButton label="Login" (click)="popLoginDialog()" icon="fa-sign-in"></button>
-</p-menubar>
+<p-dialog [(visible)]="displayCSVUpload" [modal]="true">
+  <app-fileupload></app-fileupload>
+</p-dialog>
 
-</div> -->
 
 <p-dialog [(visible)]="displayDialog" header="Admin Login" [responsive]="true" showEffect="fade" [modal]="true">
     <label for="inputEmail" class="sr-only">Username</label>

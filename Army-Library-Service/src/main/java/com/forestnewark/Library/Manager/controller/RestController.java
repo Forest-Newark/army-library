@@ -12,9 +12,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 
@@ -52,7 +54,7 @@ public class RestController {
      * @return all compositions (unsorted)
      */
 
-    @RequestMapping(value= "/composition", produces = "application/json")
+    @RequestMapping(value= "/compositions", produces = "application/json")
     public @ResponseBody List<Composition> getAllCompositions(){
         return compositionRepository.findAll();
     }
@@ -103,7 +105,7 @@ public class RestController {
      * @throws IOException
      */
     @RequestMapping(value = "/submitCSV", method = RequestMethod.POST)
-    public void uploadFileHandler(@RequestParam("File") MultipartFile file) throws IOException {
+    public void uploadFileHandler(@RequestParam("File") MultipartFile file,@RequestParam("User") String user) throws IOException {
 
         System.out.println("file uploaded");
 
@@ -120,9 +122,43 @@ public class RestController {
                     record.get("Arranger"),
                     record.get("Ensemble"),
                     record.get("Copyright"),
-                    record.get("Notes")
+                    record.get("Notes"),
+                    null,
+                    user
             );
             compositionRepository.save(composition);
+        }
+    }
+
+    @RequestMapping(value="/downloadCSV", method = RequestMethod.GET)
+    public void downloadCSV(HttpServletResponse response) throws IOException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        response.setContentType("application/ms-excel"); 
+        response.setHeader("Content-Disposition", "attachment; filename=Band-Library-("+ LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern("yyyy-MMM-dd"))+").csv");
+        try {
+            // Write the header line
+            OutputStream out = response.getOutputStream();
+            String header = "Catagory,libnum,Title,Composer,Arranger,Ensemble,Copyright,Notes,URL\n";
+            out.write(header.getBytes());
+            // Write the content
+            List<Composition> compositions = compositionRepository.findAll();
+            for (Composition comp: compositions) {
+                String line= comp.getCatagory() + "," +
+                        comp.getLibraryNumber() + "," +
+                        comp.getTitle() + "," +
+                        comp.getComposer() + "," +
+                        comp.getArranger() + "," +
+                        comp.getEnsemble() + "," +
+                        comp.getCopyright() + "," +
+                        comp.getNotes() + "," +
+                        comp.getUrl() + "," +
+                        "\n";
+                out.write(line.toString().getBytes());
+            }
+            out.flush();
+        } catch (Exception e) {
+
         }
     }
 

@@ -17,6 +17,7 @@ export class NavbarComponent implements OnInit {
   authitems: MenuItem[];
 
   displayDialog: boolean = false;
+  displayCSVUpload: boolean = false;
 
   popLoginDialog(){
      this.displayDialog = !this.displayDialog;
@@ -57,10 +58,23 @@ export class NavbarComponent implements OnInit {
                           {label: 'Add', icon: 'fa-plus',command: (event) => {
                             alert('clicked');
                         }}
-                      ],
+                      ]
                       };
       let menuItemTwo = {label:'About',icon:'fa-info-circle'};
+      let menuItemUtility = {
+        label:'Tools',
+        icon:'fa-wrench',
+        items: [
+          {label:'Upload CSV', icon:'fa-upload',command:(event) => {
+            this.displayCSVUpload = !this.displayCSVUpload;
+          }},
+          {label: 'Download CSV', icon: 'fa-download',command:(event)=>{
+            alert('download');
+          }}
+        ]
+      }
       this.items.push(menuItemOne);
+      this.items.push(menuItemUtility);
     
   //       this.items = [
   //         {label:'File',

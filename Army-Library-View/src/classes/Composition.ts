@@ -8,4 +8,8 @@ export class Composition{
     ensemble:string;
     copyright:string;
     notes:string;
+    url:string;
+    lastEdit:string;
+    editedBy:string
+
 }
