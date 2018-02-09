@@ -15,6 +15,7 @@ export class NavbarComponent implements OnInit {
   loginPassword; string;
   items: MenuItem[];
   authitems: MenuItem[];
+  authenticatedUser: boolean = false;
 
   displayDialog: boolean = false;
   displayCSVUpload: boolean = false;
@@ -24,10 +25,24 @@ export class NavbarComponent implements OnInit {
   }
 
   login(){
-    this.displayDialog = false;
-    if(this.userService.checkUserCredentials(this.loginUserName,this.loginPassword)){
-      this.populateMenuBar();
-    };
+    this.userService.checkUserCredentials(this.loginUserName,this.loginPassword).subscribe(
+      data =>{
+        if(data === true){
+          this.displayDialog = false;
+          this.authenticatedUser = true;
+          this.populateMenuBar();
+
+        }
+        else {
+          alert('bad login');
+        }
+      }
+    )
+
+
+    // if(this.userService.checkUserCredentials(this.loginUserName,this.loginPassword)){
+    //   this.populateMenuBar();
+    // };
   
 
   }
@@ -41,11 +56,11 @@ export class NavbarComponent implements OnInit {
 
   isUserAuthenticated(): boolean {
   
-    return this.userService.isUserAuthenticated();
+    return this.authenticatedUser
   }
 
   logout(): void {
-
+    this.authenticatedUser = false;
     this.userService.logoutUser();
     this.items = [];
    

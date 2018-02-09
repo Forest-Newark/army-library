@@ -1,7 +1,9 @@
 package com.forestnewark.Library.Manager.controller;
 
 import com.forestnewark.Library.Manager.Repository.CompositionRepository;
+import com.forestnewark.Library.Manager.Repository.LibraryUserRepository;
 import com.forestnewark.Library.Manager.bean.Composition;
+import com.forestnewark.Library.Manager.bean.LibraryUser;
 import com.forestnewark.Library.Manager.service.FileService;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -33,6 +35,9 @@ public class RestController {
 
     @Autowired
     CompositionRepository compositionRepository;
+
+    @Autowired
+    LibraryUserRepository userRepository;
 
     @Autowired
     FileService fileService;
@@ -105,7 +110,7 @@ public class RestController {
      * @throws IOException
      */
     @RequestMapping(value = "/submitCSV", method = RequestMethod.POST)
-    public void uploadFileHandler(@RequestParam("File") MultipartFile file,@RequestParam("User") String user) throws IOException {
+    public void uploadFileHandler(@RequestParam("File") MultipartFile file,@RequestParam("User") LibraryUser user) throws IOException {
 
         System.out.println("file uploaded");
 
@@ -114,7 +119,6 @@ public class RestController {
         Iterable<CSVRecord> records = CSVFormat.RFC4180.withHeader("Catagory", "libnum", "Title","Composer","Arranger","Copyright","Ensemble","Notes").parse(in);
         for (CSVRecord record : records) {
             Composition composition = new Composition(
-                    null,
                     record.get("Catagory"),
                     record.get("libnum"),
                     record.get("Title"),
@@ -124,7 +128,7 @@ public class RestController {
                     record.get("Copyright"),
                     record.get("Notes"),
                     null,
-                    user
+                    user.getUserName()
             );
             compositionRepository.save(composition);
         }
@@ -160,6 +164,62 @@ public class RestController {
         } catch (Exception e) {
 
         }
+    }
+
+
+    /**
+     * Validate User Login
+     * @param userName
+     * @param password
+     * @return
+     */
+    @RequestMapping(value="/user/validateLogin",method= RequestMethod.POST)
+    public boolean validateLogin(@RequestParam("userName") String userName,@RequestParam("password") String password){
+
+        System.out.println("username::" + userName);
+        System.out.println("password::" + password);
+        LibraryUser checkUser = userRepository.findByUserName(userName);
+        System.out.println("checkuser::" + checkUser);
+
+        if(checkUser == null){
+            return false;
+        }
+        else{
+            return (checkUser.getPassword().equals(password));
+        }
+
+
+    }
+
+    /**
+     * Add User
+     * @param user
+     * @return
+     */
+    @RequestMapping(value="user/addUser",method = RequestMethod.POST)
+    public ResponseEntity<?> addUser(@RequestBody LibraryUser user){
+
+        if(userRepository.findByUserName(user.getUserName()) == null){
+            userRepository.save(user);
+            return new ResponseEntity<LibraryUser>(user,HttpStatus.CREATED);
+
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /**
+     * Create Super User
+     * @return
+     */
+    @RequestMapping(value="user/enableSuperUser",method=RequestMethod.GET)
+    public ResponseEntity<?> createSuperUser(){
+        if(userRepository.findByUserName("SuperUser") == null){
+            userRepository.save(new LibraryUser("SuperUser","Super","User","MASTER","superUser"));
+
+        }
+        return new ResponseEntity<LibraryUser>(userRepository.findByUserName("SuperUser"), HttpStatus.OK);
     }
 
 

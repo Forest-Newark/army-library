@@ -5,7 +5,7 @@ import { Composition } from '../../classes/composition';
 import { HttpClient } from '@angular/common/http';
 import { DialogModule } from 'primeng/primeng';
 import {AuthenticationService} from '../authentication.service';
-
+import { environment } from '../../environments/environment';
 
 // https://www.primefaces.org/primeng/#/datatable/crud
 
@@ -21,6 +21,7 @@ export class DatatableComponent implements OnInit {
   displayDialog: boolean;
 
   comp: PrimeComposition = new PrimeComposition();
+  apiUrl = environment.apiUrl;
 
   onRowSelect(event) {
     this.comp = this.cloneComp(event.data);
@@ -38,7 +39,7 @@ export class DatatableComponent implements OnInit {
 
   save(c: PrimeComposition) {
 
-    this.http.post('https://army-library.herokuapp.com/api/composition/update', this.comp)
+    this.http.post(this.apiUrl+'/composition/update', this.comp)
       .subscribe(
       data => { console.log('success'), this.displayDialog = false;this.subscribeToData(); },
       error => console.log(error)
@@ -60,7 +61,7 @@ export class DatatableComponent implements OnInit {
   }
 
   subscribeToData() {
-    this.http.get<Composition[]>('https://army-library.herokuapp.com/api/compositions').subscribe(data => {
+    this.http.get<Composition[]>(this.apiUrl+'/compositions').subscribe(data => {
       this.compositions = data;
 
     });

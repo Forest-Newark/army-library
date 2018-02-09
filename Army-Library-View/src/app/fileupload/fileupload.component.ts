@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { RequestOptions } from '@angular/http';
 import { Headers } from '@angular/http';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-fileupload',
@@ -11,6 +12,8 @@ import { Headers } from '@angular/http';
   styleUrls: ['./fileupload.component.css']
 })
 export class FileuploadComponent implements OnInit {
+
+  apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
@@ -24,7 +27,7 @@ export class FileuploadComponent implements OnInit {
       let formData: FormData = new FormData();
       formData.append('File', file, file.name);
       let headers = new Headers();
-      this.http.post('https://army-library.herokuapp.com/api/submitCSV', formData)
+      this.http.post(this.apiUrl+'/submitCSV', formData)
         .subscribe(
         data => console.log('success'),
         error => console.log(error)

@@ -1,9 +1,7 @@
 package com.forestnewark.Library.Manager.bean;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by Forest on 11/25/17.
@@ -49,10 +47,21 @@ public class Composition {
     @Column
     private String editedBy;
 
+
+    @PrePersist
+    protected void onCreate() {
+        lastEdit = new Date().toString();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        lastEdit = new Date().toString();
+    }
+
     public Composition() {
     }
 
-    public Composition(String catagory, String libraryNumber, String title, String composer, String arranger, String ensemble, String copyright, String notes, String url, String lastEdit, String editedBy) {
+    public Composition(String catagory, String libraryNumber, String title, String composer, String arranger, String ensemble, String copyright, String notes, String url, String editedBy) {
         this.catagory = catagory;
         this.libraryNumber = libraryNumber;
         this.title = title;
@@ -62,7 +71,6 @@ public class Composition {
         this.copyright = copyright;
         this.notes = notes;
         this.url = url;
-        this.lastEdit = lastEdit;
         this.editedBy = editedBy;
     }
 
