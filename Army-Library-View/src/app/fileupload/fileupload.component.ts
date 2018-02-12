@@ -26,6 +26,7 @@ export class FileuploadComponent implements OnInit {
       let file: File = fileList[0];
       let formData: FormData = new FormData();
       formData.append('File', file, file.name);
+      formData.append('userName',sessionStorage.getItem('currentUser'));
       let headers = new Headers();
       this.http.post(this.apiUrl+'/submitCSV', formData)
         .subscribe(

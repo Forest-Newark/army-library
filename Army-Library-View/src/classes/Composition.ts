@@ -11,5 +11,4 @@ export class Composition{
     url:string;
     lastEdit:string;
     editedBy:string
-
 }

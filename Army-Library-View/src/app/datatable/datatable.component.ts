@@ -38,10 +38,20 @@ export class DatatableComponent implements OnInit {
 
 
   save(c: PrimeComposition) {
-
-    this.http.post(this.apiUrl+'/composition/update', this.comp)
+    let formData: FormData = new FormData();
+    formData.append('composition',JSON.stringify(this.comp) );
+    formData.append('userName',sessionStorage.getItem('currentUser'));
+    this.http.post(this.apiUrl+'/composition/update', formData)
       .subscribe(
       data => { console.log('success'), this.displayDialog = false;this.subscribeToData(); },
+      error => console.log(error)
+      )
+  }
+
+  delete(c: PrimeComposition){
+    this.http.post(this.apiUrl+'/composition/delete', this.comp)
+      .subscribe(
+      data => { console.log('success'), this.displayDialog = false;this.subscribeToData(); this.comp =new PrimeComposition()},
       error => console.log(error)
       )
   }
@@ -50,8 +60,6 @@ export class DatatableComponent implements OnInit {
     return this.userService.isUserAuthenticated();
   }
   
-
-
   constructor(private http: HttpClient, private userService: AuthenticationService) { }
 
   ngOnInit() {
@@ -61,13 +69,18 @@ export class DatatableComponent implements OnInit {
   }
 
   subscribeToData() {
+    this.compositions = [];
     this.http.get<Composition[]>(this.apiUrl+'/compositions').subscribe(data => {
-      this.compositions = data;
+      this.compositions = [...data];
+      console.log(data);
 
     });
 
   }
 
+  newComposition(){
+    this.displayDialog = true;
+  }
 }
 
 class PrimeComposition {

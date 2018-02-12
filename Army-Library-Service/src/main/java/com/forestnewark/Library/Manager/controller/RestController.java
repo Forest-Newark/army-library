@@ -1,13 +1,16 @@
 package com.forestnewark.Library.Manager.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.forestnewark.Library.Manager.Repository.CompositionRepository;
 import com.forestnewark.Library.Manager.Repository.LibraryUserRepository;
 import com.forestnewark.Library.Manager.bean.Composition;
 import com.forestnewark.Library.Manager.bean.LibraryUser;
 import com.forestnewark.Library.Manager.service.FileService;
+import com.google.gson.Gson;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +22,10 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
-
 
 
 /**
@@ -86,9 +90,17 @@ public class RestController {
      * @return
      */
     @RequestMapping(value="/composition/update", method = RequestMethod.POST)
-    public Composition editComposition(@RequestBody Composition composition){
-        compositionRepository.save(composition);
-        return composition;
+    public Composition editComposition(@RequestParam("userName") String userName,@RequestParam("composition") String composition){
+
+        Composition compToUpdate = null;
+        try {
+            compToUpdate = new ObjectMapper().readValue(composition,Composition.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        compToUpdate.setEditedBy(userName);
+        compositionRepository.save(compToUpdate);
+        return compToUpdate;
     }
 
 
@@ -103,6 +115,12 @@ public class RestController {
         return composition;
     }
 
+    @RequestMapping(value="/util/catagory",method= RequestMethod.GET)
+    public ResponseEntity<?> getAllCatagories(){
+
+        
+    }
+
 
     /**
      * Upload CSV File
@@ -110,9 +128,9 @@ public class RestController {
      * @throws IOException
      */
     @RequestMapping(value = "/submitCSV", method = RequestMethod.POST)
-    public void uploadFileHandler(@RequestParam("File") MultipartFile file,@RequestParam("User") LibraryUser user) throws IOException {
+    public void uploadFileHandler(@RequestParam("File") MultipartFile file,@RequestParam("userName") String userName) throws IOException {
 
-        System.out.println("file uploaded");
+        compositionRepository.deleteAll();
 
         Reader in = new FileReader(fileService.convert(file));
 
@@ -128,28 +146,31 @@ public class RestController {
                     record.get("Copyright"),
                     record.get("Notes"),
                     null,
-                    user.getUserName()
+                    userName
             );
-            compositionRepository.save(composition);
+            if(!composition.getCatagory().equals("Catagory")){
+                compositionRepository.save(composition);
+            }
+
         }
     }
 
-    @RequestMapping(value="/downloadCSV", method = RequestMethod.GET)
+    @RequestMapping(value = "/downloadCSV")
     public void downloadCSV(HttpServletResponse response) throws IOException {
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        response.setContentType("application/ms-excel"); 
-        response.setHeader("Content-Disposition", "attachment; filename=Band-Library-("+ LocalDateTime.now()
-                .format(DateTimeFormatter.ofPattern("yyyy-MMM-dd"))+").csv");
-        try {
-            // Write the header line
-            OutputStream out = response.getOutputStream();
-            String header = "Catagory,libnum,Title,Composer,Arranger,Ensemble,Copyright,Notes,URL\n";
-            out.write(header.getBytes());
-            // Write the content
-            List<Composition> compositions = compositionRepository.findAll();
-            for (Composition comp: compositions) {
-                String line= comp.getCatagory() + "," +
-                        comp.getLibraryNumber() + "," +
+        response.setContentType("text/csv");
+        String reportName = "Band-Library-("+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MMM-dd"))+").csv";
+        response.setHeader("Content-disposition", "attachment;filename="+reportName);
+
+        ArrayList<String> rows = new ArrayList<String>();
+        rows.add("Catagory,libnum,Title,Composer,Arranger,Ensemble,Copyright,Notes,URL");
+        rows.add("\n");
+        List<Composition> compositions = compositionRepository.findAll();
+
+        for (Composition comp: compositions) {
+            String line= comp.getCatagory() + "," +
+                       comp.getLibraryNumber() + "," +
                         comp.getTitle() + "," +
                         comp.getComposer() + "," +
                         comp.getArranger() + "," +
@@ -158,13 +179,20 @@ public class RestController {
                         comp.getNotes() + "," +
                         comp.getUrl() + "," +
                         "\n";
-                out.write(line.toString().getBytes());
-            }
-            out.flush();
-        } catch (Exception e) {
-
+            rows.add(line);
         }
+
+        Iterator<String> iter = rows.iterator();
+        while (iter.hasNext()) {
+            String outputString = (String) iter.next();
+            response.getOutputStream().print(outputString);
+        }
+
+        response.getOutputStream().flush();
+
     }
+
+
 
 
     /**

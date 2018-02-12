@@ -3,6 +3,10 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MenubarModule,MenuItem, MenuItemContent} from 'primeng/primeng';
 import {DialogModule,InputTextModule,PasswordModule} from 'primeng/primeng';
 import {AuthenticationService} from '../authentication.service';
+import {ApiService} from '../api-service.service';
+import { saveAs } from 'file-saver/FileSaver';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-navbar',
@@ -16,6 +20,8 @@ export class NavbarComponent implements OnInit {
   items: MenuItem[];
   authitems: MenuItem[];
   authenticatedUser: boolean = false;
+  apiUrl = environment.apiUrl;
+  
 
   displayDialog: boolean = false;
   displayCSVUpload: boolean = false;
@@ -30,6 +36,8 @@ export class NavbarComponent implements OnInit {
         if(data === true){
           this.displayDialog = false;
           this.authenticatedUser = true;
+          this.userService.userIsAuthenticate();
+          sessionStorage.setItem('currentUser',this.loginUserName);
           this.populateMenuBar();
 
         }
@@ -47,7 +55,7 @@ export class NavbarComponent implements OnInit {
 
   }
 
-  constructor(private userService: AuthenticationService) { }
+  constructor(private userService: AuthenticationService,private apiService: ApiService,private http: HttpClient) { }
 
   ngOnInit() {
     this.items =[];
@@ -84,11 +92,17 @@ export class NavbarComponent implements OnInit {
             this.displayCSVUpload = !this.displayCSVUpload;
           }},
           {label: 'Download CSV', icon: 'fa-download',command:(event)=>{
-            alert('download');
+            // this.apiService.downloadCSV().subscribe(data => this.saveToFileSystem(data)),
+            //      error => console.log("Error downloading the file."),
+            //      () => console.info("OK");
+            // this.saveFile();
+            window.open(this.apiUrl+"/downloadCSV", "_blank");
+
+   
           }}
         ]
       }
-      this.items.push(menuItemOne);
+      //this.items.push(menuItemOne);
       this.items.push(menuItemUtility);
     
   //       this.items = [
@@ -106,6 +120,14 @@ export class NavbarComponent implements OnInit {
   // ];
   }
 
+  
+  private saveToFileSystem(data: any) {
+  
+    var downloadUrl= URL.createObjectURL(data);
+    window.open(downloadUrl, "_blank");
+                 
+  }
+
   blankMenuBar(){
     this.items = [];
   }
@@ -114,6 +136,8 @@ export class NavbarComponent implements OnInit {
     this.items = [];
   }
 
+
+  
   
 
 

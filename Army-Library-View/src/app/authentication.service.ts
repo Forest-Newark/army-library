@@ -25,6 +25,10 @@ export class AuthenticationService {
     return this.userAuthenticated;
   }
 
+  userIsAuthenticate(): void {
+    this.userAuthenticated = true;
+  }
+
   logoutUser(): void {
     this.userAuthenticated = false;
   }
