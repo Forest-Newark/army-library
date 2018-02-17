@@ -10,10 +10,10 @@ import { DataTableModule } from 'primeng/primeng';
 import {ButtonModule} from 'primeng/primeng';
 import { FileuploadComponent } from './fileupload/fileupload.component';
 import {FileUploadModule,InputTextModule,PasswordModule} from 'primeng/primeng';
-import {DialogModule,InputTextareaModule} from 'primeng/primeng';
+import {DialogModule,InputTextareaModule,KeyFilterModule} from 'primeng/primeng';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
-import {MenubarModule,MenuItem} from 'primeng/primeng';
+import {MenubarModule,MenuItem,DropdownModule,SelectItem} from 'primeng/primeng';
 import { NavbarComponent } from './navbar/navbar.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AppRoutingModule} from '../app/app-routing.module';
@@ -47,6 +47,8 @@ import { CompositionDetailComponent } from './composition-detail/composition-det
     InputTextModule,
     PasswordModule,
     MenubarModule,
+    DropdownModule,
+    KeyFilterModule
     
   ],
   providers: [AuthenticationService,ApiService],

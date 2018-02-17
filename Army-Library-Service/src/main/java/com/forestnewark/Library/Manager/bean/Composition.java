@@ -35,16 +35,16 @@ public class Composition {
     @Column
     private String copyright;
 
-    @Column
+    @Column(length=800)
     private String notes;
 
-    @Column
+    @Column(length=800)
     private String url;
 
-    @Column
+    @Column(length=800)
     private String lastEdit;
 
-    @Column
+    @Column(length=800)
     private String editedBy;
 
 

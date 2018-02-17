@@ -3,7 +3,7 @@ import { DataTableModule, SharedModule } from 'primeng/primeng';
 import { ButtonModule,InputTextareaModule } from 'primeng/primeng';
 import { Composition } from '../../classes/composition';
 import { HttpClient } from '@angular/common/http';
-import { DialogModule } from 'primeng/primeng';
+import { DialogModule,DropdownModule,SelectItem,KeyFilterModule} from 'primeng/primeng';
 import {AuthenticationService} from '../authentication.service';
 import { environment } from '../../environments/environment';
 
@@ -17,8 +17,10 @@ import { environment } from '../../environments/environment';
 export class DatatableComponent implements OnInit {
 
   compositions: Composition[];
-  catagories = [];
+  catagories:SelectItem[];
   displayDialog: boolean;
+
+  blockSpecial: RegExp = /[^\"]+$/ 
 
   comp: PrimeComposition = new PrimeComposition();
   apiUrl = environment.apiUrl;
@@ -49,6 +51,7 @@ export class DatatableComponent implements OnInit {
   }
 
   delete(c: PrimeComposition){
+ 
     this.http.post(this.apiUrl+'/composition/delete', this.comp)
       .subscribe(
       data => { console.log('success'), this.displayDialog = false;this.subscribeToData(); this.comp =new PrimeComposition()},
@@ -64,21 +67,31 @@ export class DatatableComponent implements OnInit {
 
   ngOnInit() {
     this.subscribeToData();
-    this.catagories.push({ label: 'All Brands', value: null });
-    this.catagories.push({ label: 'CS', value: 'CS' });
   }
 
   subscribeToData() {
     this.compositions = [];
+    this.catagories = [];
     this.http.get<Composition[]>(this.apiUrl+'/compositions').subscribe(data => {
       this.compositions = [...data];
       console.log(data);
 
     });
+    // this.http.get<String[]>(this.apiUrl+'/util/catagory').subscribe(data => {
+    //   for(let catagory of data){
+    //     this.catagories.push({label: catagory.toString(), value: catagory.toString()})
+    //   }
+
+    //   console.log(data);
+
+    // });
+
+
 
   }
 
   newComposition(){
+    this.comp = new PrimeComposition();
     this.displayDialog = true;
   }
 }

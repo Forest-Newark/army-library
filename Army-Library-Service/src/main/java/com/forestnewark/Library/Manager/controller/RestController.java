@@ -118,9 +118,10 @@ public class RestController {
     @RequestMapping(value="/util/catagory",method= RequestMethod.GET)
     public ResponseEntity<?> getAllCatagories(){
 
-        
-    }
 
+        return new ResponseEntity<Object>(compositionRepository.findDistinctCatagory(),HttpStatus.OK);
+
+    }
 
     /**
      * Upload CSV File
@@ -133,26 +134,36 @@ public class RestController {
         compositionRepository.deleteAll();
 
         Reader in = new FileReader(fileService.convert(file));
+        //CSVFormat csvFileFormat = CSVFormat.DEFAULT.withQuote();
 
-        Iterable<CSVRecord> records = CSVFormat.RFC4180.withHeader("Catagory", "libnum", "Title","Composer","Arranger","Copyright","Ensemble","Notes").parse(in);
+        Iterable<CSVRecord> records = CSVFormat.EXCEL.withHeader("Catagory", "libnum", "Title","Composer","Arranger","Copyright","Ensemble","Notes").withQuote('"').parse(in);
         for (CSVRecord record : records) {
             Composition composition = new Composition(
-                    record.get("Catagory"),
+                    record.get("Catagory").trim(),
                     record.get("libnum"),
-                    record.get("Title"),
-                    record.get("Composer"),
-                    record.get("Arranger"),
+                    validateInput(record.get("Title")),
+                    validateInput(record.get("Composer")),
+                    validateInput(record.get("Arranger")),
                     record.get("Ensemble"),
                     record.get("Copyright"),
-                    record.get("Notes"),
+                    validateInput(record.get("Notes")),
                     null,
                     userName
             );
+            System.out.println("Catagory::" + record);
             if(!composition.getCatagory().equals("Catagory")){
                 compositionRepository.save(composition);
             }
 
         }
+    }
+
+    public String validateInput(String input){
+//        if(input.contains("\"") || input.contains(",") || input.contains("'") || input.contains("(") || input.contains(")") || input.contains(";")){
+//            input+= "\""+input+"\"";
+//            return input;
+//        }
+        return input;
     }
 
     @RequestMapping(value = "/downloadCSV")
@@ -169,17 +180,18 @@ public class RestController {
         List<Composition> compositions = compositionRepository.findAll();
 
         for (Composition comp: compositions) {
-            String line= comp.getCatagory() + "," +
-                       comp.getLibraryNumber() + "," +
-                        comp.getTitle() + "," +
-                        comp.getComposer() + "," +
-                        comp.getArranger() + "," +
-                        comp.getEnsemble() + "," +
-                        comp.getCopyright() + "," +
-                        comp.getNotes() + "," +
-                        comp.getUrl() + "," +
+            String line= validoutput(comp.getCatagory()) + "," +
+                         validoutput(comp.getLibraryNumber()) + "," +
+                         validoutput(comp.getTitle())  + "," +
+                         validoutput(comp.getComposer())  + "," +
+                         validoutput(comp.getArranger())  + "," +
+                         validoutput(comp.getEnsemble()) + "," +
+                         validoutput(comp.getCopyright()) + "," +
+                         validoutput(comp.getNotes())  + "," +
+                         validoutput(comp.getUrl()) + "," +
                         "\n";
             rows.add(line);
+            System.out.println(line);
         }
 
         Iterator<String> iter = rows.iterator();
@@ -191,6 +203,16 @@ public class RestController {
         response.getOutputStream().flush();
 
     }
+
+    public String validoutput(String output){
+
+        if (output == null){
+           return "\"\"";
+        }
+        String modOutput = "\""+output+"\"";
+        return modOutput;
+    }
+
 
 
 
